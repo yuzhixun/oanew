@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    body{
+    background-color: #D0D0D0;
+    }
+
+   .p{
+            text-align: center;
+            color: black;
+        }
+    a{
+            color: black;
+            cursor: pointer;
+        }
+        a:hover {
+            color: blue;
+        }
+        table {
+          border-collapse: collapse;
+          width: 100%;
+          margin: 25px;
+        }
+        th, td {
+        width: 20%;
+          border: 1px solid black;
+          padding: 10px;
+          text-align: center;
+        }
+        th {
+          background-color: #f2f2f2;
+          font-weight: bold;
+        }
+        tbody:nth-child(even) {
+          background-color: #e6e6e6;
+        }
+        tr:hover {
+          background-color: Aqua;
+        }
+      </style>
+</head>
+<body>
+<h1 class="p">{%if tag == 'workbook'%}
+            工作书
+            {%elif tag == 'drawing'%}
+            图纸
+            {%endif%}目录------总览</h1>
+<HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#987cb9 SIZE=3>
+<div>
+<h2>客户目录</h2>
+<div>
+   <select id="redirectSelect" onchange="redirectToOption()">
+
+       <option value="">选择客户查看</option>
+       {% for i in name %}
+        <option value={{url_for('custom',name=i,tag=tag)}}>{{i}}</option>
+        <!-- 根据需要添加更多选项 -->
+   {%endfor%}
+   </select>
+    </div>
+    <input type="text" id="searchInput" placeholder="查找此页面">
+    <button onclick="searchKeyword()">搜索</button>
+
+</div>
+<HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#987cb9 SIZE=3>
+{% for l in listP %}
+      <table id="dataTable">
+        <caption><h2>{{l[0].name}}</h2></caption>
+        <thead>
+          <tr>
+            <th>类型</th>
+            <th>客户</th>
+            <th>文件</th>
+            <th>日期</th>
+              <th>备注</th>
+          </tr>
+        </thead>
+        {% for i in l %}
+        <tbody>
+          <tr>
+            <td>{%if i.tag == 'workbook'%}
+            工作书
+            {%elif i.tag == 'drawing'%}
+            图纸
+            {%endif%}</td>
+            <td>
+                <a href={{url_for('custom',name=i.name,tag=tag)}}>
+                  {{i.name}}
+                </a>
+            </td>
+            <td><a  href = {{url_for("view",path=i.path)}}>{{i.fname}}</a></td>
+            <td>{{i.data}}</td>
+              <td>{{i.mes}}</td>
+          </tr>
+           {% endfor %}
+          </tbody>
+    {% endfor %}
+      </table>
+
+</body>
+</html>
+ <script>
+        function redirectToOption() {
+            var selectElement = document.getElementById("redirectSelect");
+            var selectedOptionValue = selectElement.value;
+
+            if (selectedOptionValue !== "") {
+                window.location.href = selectedOptionValue;
+            }
+        }
+
+        function searchKeyword() {
+    const inputText = document.getElementById('searchInput').value.toLowerCase();
+    const table = document.getElementById('dataTable');
+
+    // 循环遍历表格的每一行
+    for (let i = 1; i < table.rows.length; i++) {
+        const row = table.rows[i];
+        let found = false;
+
+        // 循环遍历当前行的每个单元格
+        for (let j = 0; j < row.cells.length; j++) {
+            const cell = row.cells[j];
+            const cellText = cell.textContent.toLowerCase();
+
+            // 使用 indexOf() 方法查找关键字
+            if (cellText.indexOf(inputText) !== -1) {
+                found = true;
+                // 将匹配到的关键字单元格背景颜色设置为绿色
+                cell.style.backgroundColor = 'lightgreen';
+            } else {
+                // 重置没有找到关键字的单元格的样式
+                cell.style.backgroundColor = 'transparent';
+            }
+        }
+
+        // 如果在当前行找到了关键字，则保留该行的可见性，否则隐藏该行
+<!--        row.style.display = found ? '' : 'none';-->
+    }
+}
+
+
+
+
+
+
+
+
+    </script>

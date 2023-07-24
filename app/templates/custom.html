@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>custom</title>
+    <style>
+    a{
+            color: black;
+            cursor: pointer;
+        }
+        a:hover {
+            color: blue;
+        }
+        table {
+          border-collapse: collapse;
+          width: 100%;
+          margin: 5px;
+        }
+
+        th,td {
+        width: 20%;
+          border: 1px solid #ccc;
+          padding: 10px;
+          text-align: center;
+        }
+        th {
+          background-color: #f2f2f2;
+          font-weight: bold;
+        }
+        tbody:nth-child(even) {
+          background-color: #e6e6e6;
+        }
+        tr:hover {
+          background-color: Aqua;
+        }
+      </style>
+</head>
+<body>
+{% if not u[0] %}
+<h1>还没有元素</h1>
+{% else:%}
+<h1 style="text-align: center">{{u[0].name}} </h1>
+<h2>{%if tag == 'workbook'%}
+            工作书
+            {%elif tag == 'drawing'%}
+            图纸
+            {%endif%}</h2>
+ <input type="text" id="searchInput" placeholder="查找此页面">
+    <button onclick="searchKeyword()">搜索</button>
+<table id="dataTable">
+    <caption>{{u[0].name}}的{{tag}}</caption>
+    <thead>
+    <tr>
+        <th>类型</th>
+        <th>文件</th>
+        <th>日期</th>
+        <th>备注</th>
+    </tr>
+    </thead>
+    <tbody>
+    {%for i in u%}
+    <tr>
+        <td>
+            {%if tag == 'workbook'%}
+            工作书
+            {%elif tag == 'drawing'%}
+            图纸
+            {%endif%}
+
+        </td>
+        <td>
+            <a href={{url_for("view",path=i.path)}}>
+                {{i.fname}}
+            </a>
+        </td>
+        <td>{{i.data}}</td>
+<td>{{i.mes}}</td>
+    </tr>
+    {%endfor%}
+    </tbody>
+</table>
+{% endif%}
+
+</body>
+</html>
+<script>
+    function searchKeyword() {
+    const inputText = document.getElementById('searchInput').value.toLowerCase();
+    const table = document.getElementById('dataTable');
+
+    // 循环遍历表格的每一行
+    for (let i = 1; i < table.rows.length; i++) {
+        const row = table.rows[i];
+        let found = false;
+
+        // 循环遍历当前行的每个单元格
+        for (let j = 0; j < row.cells.length; j++) {
+            const cell = row.cells[j];
+            const cellText = cell.textContent.toLowerCase();
+
+            // 使用 indexOf() 方法查找关键字
+            if (cellText.indexOf(inputText) !== -1) {
+                found = true;
+                // 将匹配到的关键字单元格背景颜色设置为绿色
+                cell.style.backgroundColor = 'lightgreen';
+            } else {
+                // 重置没有找到关键字的单元格的样式
+                cell.style.backgroundColor = 'transparent';
+            }
+        }
+
+        // 如果在当前行找到了关键字，则保留该行的可见性，否则隐藏该行
+<!--        row.style.display = found ? '' : 'none';-->
+    }
+}
+</script>

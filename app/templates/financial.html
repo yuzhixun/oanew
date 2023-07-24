@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>financial</title>
+</head>
+<body>
+{%for i in range(a)%}
+<table border=2px>
+<thead>
+<th>日期</th>
+<th>项目</th>
+<th>供应商</th>
+<th>规格</th>
+<th>单位</th>
+<th>数量</th>
+<th>单价</th>
+<th>总额</th>
+<th>备注</th>
+<th>类别</th>
+</thead>
+    
+<tbody>
+<td>{{f[i].data}}</td>
+<td>{{f[i].item}}</td>
+<td>{{f[i].vendor}}</td>
+<td>{{f[i].specification}}</td>
+<td>{{f[i].unit}}</td>
+<td>{{f[i].amout}}</td>
+<td>{{f[i].unit_price}}</td>
+<td>{{f[i].price}}</td>
+<td>{{f[i].remark}}</td>
+<td>{{f[i].category}}</td>
+</tbody>
+
+</table>
+{%endfor%}
+</body>
+</html>

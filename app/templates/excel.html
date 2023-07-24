@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Show Excel</title>
+</head>
+<body>
+    <h1>Excel文件列表</h1>
+    <ul>
+        {% for filename in excel_files %}
+            <li><a href="/excel/{{ filename }}">{{ filename }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
